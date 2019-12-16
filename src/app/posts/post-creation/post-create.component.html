@@ -1,0 +1,135 @@
+<mat-card style="width: 40%;">
+  <button
+    mat-raised-button
+    style="margin-right: 50px;"
+    color="warn"
+    type="submit"
+    (click)="inFunc()"
+  >
+    Enter Vehicle
+  </button>
+  <button
+    mat-raised-button
+    style="margin-right: 50px;"
+    color="warn"
+    type="submit"
+    (click)="outFunc()"
+  >
+    Exit Vehicle
+  </button>
+  <button mat-raised-button color="warn" (click)="anaFunc()">
+    Vehicle Analytics
+  </button>
+</mat-card>
+
+<p>{{ inVehicle }}</p>
+
+<mat-card style="margin: 30px;" *ngIf="vehicleIn">
+  <form (submit)="onAddEntranceActivity(vehicleInForm)" #vehicleInForm="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        name="title"
+        #title="ngModel"
+        ngModel
+        required
+        minlength="3"
+        placeholder="vehicle number"
+      />
+      <mat-error *ngIf="title.invalid">Please enter a vehicle number</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">
+      Save Entrance Activity
+    </button>
+  </form>
+</mat-card>
+
+<mat-card style="margin: 30px;" *ngIf="vehicleOut">
+  <form (submit)="onAddExitActivity(vehicleOutForm)" #vehicleOutForm="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        name="title"
+        #title="ngModel"
+        ngModel
+        required
+        minlength="3"
+        placeholder="Vehicle Number"
+      />
+      <mat-error *ngIf="title.invalid">Please enter a vehicle number</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">
+      Update Exit Activity
+    </button>
+  </form>
+</mat-card>
+
+<mat-card style="margin: 30px;" *ngIf="analytics">
+  <form (submit)="onAnalytics(analyticsForm)" #analyticsForm="ngForm">
+    <p>get sessions between dates</p>
+    <mat-form-field>
+      Start Date:
+      <input
+        matInput
+        style="width: auto;"
+        type="date"
+        name="fromDate"
+        id="fromDate"
+        [ngModel]="fromDate | date: 'time'"
+      />
+      <br /><br />
+      End Date:
+      <input
+        matInput
+        style="width: auto;"
+        type="date"
+        name="toDate"
+        id="toDate"
+        [ngModel]="toDate | date: 'yyyy-MM-dd'"
+      />
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      style="margin-left: 10px;"
+    >
+      Run Analysis
+    </button>
+  </form>
+</mat-card>
+
+<mat-accordion *ngIf="vehicleIn">
+  <mat-expansion-panel color="primary">
+    <mat-expansion-panel-header>
+      Expan for Vehicle with plate number "{{ session[0].Platenumber }}" saved
+      session information
+    </mat-expansion-panel-header>
+    <p>ID: {{ session[0]._id }}</p>
+    <p>Session status: {{ session[0].Status }}</p>
+    <p>Entrance Mac Address: {{ session[0].INAgentMACID }}</p>
+    <p>Exit Mac Address: {{ session[0].OUTAgentMACID }}</p>
+    <p>In Time: {{ session[0].Intime }}</p>
+    <p>Out Time: {{ session[0].Outtime }}</p>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<mat-accordion *ngIf="vehicleOut">
+  <mat-expansion-panel color="primary">
+    <mat-expansion-panel-header *ngIf="!session[0]">
+      No matching vehicle
+    </mat-expansion-panel-header>
+    <mat-expansion-panel-header>
+      Expan for Vehicle with plate number "{{ session[0].Platenumber }}" updated
+      information
+    </mat-expansion-panel-header>
+    <p>ID: {{ session[0]._id }}</p>
+    <p>Session status: {{ session[0].Status }}</p>
+    <p>Entrance Mac Address: {{ session[0].INAgentMACID }}</p>
+    <p>Exit Mac Address: {{ session[0].OUTAgentMACID }}</p>
+    <p>In Time: {{ session[0].Intime }}</p>
+    <p>Out Time: {{ session[0].Outtime }}</p>
+  </mat-expansion-panel>
+</mat-accordion>
